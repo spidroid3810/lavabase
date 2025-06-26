@@ -1,0 +1,24 @@
+<!-- index.html -->
+<input id="name" placeholder="Name" />
+<button onclick="addUser()">Add User</button>
+<ul id="users"></ul>
+
+<script>
+async function addUser() {
+  const name = document.getElementById('name').value;
+  await fetch('http://localhost:3000/data/users', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name })
+  });
+  loadUsers();
+}
+
+async function loadUsers() {
+  const res = await fetch('http://localhost:3000/data/users');
+  const users = await res.json();
+  document.getElementById('users').innerHTML = users.map(u => `<li>${u.name}</li>`).join('');
+}
+
+loadUsers();
+</script>
